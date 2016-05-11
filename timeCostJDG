@@ -1,0 +1,62 @@
+namespace TimeToEarn
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                double timeNeeded;
+                double itemCost;
+                double income;
+
+                Console.WriteLine("What item do you want to purchase?");
+                string itemWanted = Console.ReadLine();
+
+                invalidItemCost:
+                Console.WriteLine("How much does your item cost?");
+                string costInput = Console.ReadLine();
+                if (double.TryParse(costInput, out itemCost))
+                {
+                    invalidIncome:
+                    Console.WriteLine("Enter your income:");
+                    string incomeInput = Console.ReadLine();
+                    if (double.TryParse(incomeInput, out income))
+                    {
+                        invalidIncomeType:
+                        Console.WriteLine("Salary or hourly?");
+                        string payType = Console.ReadLine();
+                        payType.ToLower();
+
+                        if (payType == "salary")
+                        {
+                            double hourlyPay = income / 52 / 40;
+                            timeNeeded = itemCost / hourlyPay;
+                            Console.WriteLine("You need to work {0} hours to afford {1}", timeNeeded, itemWanted);
+                        }
+                        else if (payType == "hourly")
+                        {
+                            timeNeeded = itemCost / income;
+                            Console.WriteLine("You need to work {0} hours to afford {1}", timeNeeded, itemWanted);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter salary or hourly.");
+                            goto invalidIncomeType;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid income.");
+                        goto invalidIncome;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid cost.");
+                    goto invalidItemCost;
+                }
+            }
+        }
+    }
+}
